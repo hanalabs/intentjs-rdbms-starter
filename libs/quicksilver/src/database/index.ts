@@ -4,7 +4,6 @@ export * from './queryBuilders/custom';
 export * from './queryBuilders/softDelete';
 export * from './repositories/contract';
 export * from './repositories/database';
-export * from './constants';
 export * from './interfaces';
 export * from './options';
 export * from './service';

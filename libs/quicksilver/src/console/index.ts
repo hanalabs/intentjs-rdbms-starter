@@ -7,4 +7,3 @@ export * from './explorer';
 export * from './runner';
 export * from './interfaces';
 export * from './consoleIO';
-export * from './module';

@@ -1,5 +1,5 @@
-import * as pc from "picocolors";
-import Table from "cli-table3";
+import * as pc from 'picocolors';
+import * as Table from 'cli-table3';
 
 export class Logger {
   /**
@@ -35,7 +35,7 @@ export class Logger {
    * @returns void
    */
   static line(): void {
-    console.log(pc.gray("-".repeat(process.stdout.columns / 2)));
+    console.log(pc.gray('-'.repeat(process.stdout.columns / 2)));
   }
 
   /**
@@ -62,15 +62,15 @@ export class Logger {
     const uniqueCols = [];
     for (const col of columns) {
       uniqueCols.push(
-        pc.cyan(pc.bold(col.charAt(0).toUpperCase() + col.slice(1)))
+        pc.cyan(pc.bold(col.charAt(0).toUpperCase() + col.slice(1))),
       );
     }
 
     const pRows: any[] = [];
     rows.forEach((r) =>
       pRows.push(
-        Object.values(r).map((e) => (e && e.toString && e.toString()) || "")
-      )
+        Object.values(r).map((e) => (e && e.toString && e.toString()) || ''),
+      ),
     );
 
     const p = new Table({ head: uniqueCols });

@@ -1,24 +1,22 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as pc from 'picocolors';
 import { Command, ConsoleIO } from '../../console';
 import { ObjectionService } from '../service';
-import { hanalabsNestObjection } from '../constants';
-import { DatabaseOptions } from '../options';
+import { isString } from 'lodash';
 
 @Injectable()
 export class DbOperationsCommand {
-  constructor(
-    @Inject(hanalabsNestObjection.databaseOptions)
-    private options: DatabaseOptions,
-  ) {}
+  constructor() {}
 
   @Command('migrate:status {--connection==}', {
     desc: 'Command to show the status of all migrations',
   })
   async migrateStatus(_cli: ConsoleIO): Promise<void> {
-    const conn = _cli.option<string>('connection') || this.options.default;
+    const options = ObjectionService.config;
+
+    const conn = _cli.option<string>('connection') || options.default;
     const knex = ObjectionService.connection(conn);
-    const connConfig = this.options.connections[conn];
+    const connConfig = options.connections[conn];
 
     const [completed, pending]: Record<string, any>[][] =
       await knex.migrate.list(connConfig.migrations);
@@ -39,9 +37,10 @@ export class DbOperationsCommand {
     desc: 'Command to run the pending migrations',
   })
   async migrationUp(_cli: ConsoleIO): Promise<void> {
-    const conn = _cli.option<string>('connection') || this.options.default;
+    const options = ObjectionService.config;
+    const conn = _cli.option<string>('connection') || options.default;
     const knex = ObjectionService.connection(conn);
-    const connConfig = this.options.connections[conn];
+    const connConfig = options.connections[conn];
 
     const [batch, migrations]: [number, string[]] = await knex.migrate.latest(
       connConfig.migrations,
@@ -62,9 +61,10 @@ export class DbOperationsCommand {
     desc: 'Command to rollback the previous batch of migrations',
   })
   async migrateRollback(_cli: ConsoleIO) {
-    const conn = _cli.option<string>('connection') || this.options.default;
+    const options = ObjectionService.config;
+    const conn = _cli.option<string>('connection') || options.default;
     const knex = ObjectionService.connection(conn);
-    const connConfig = this.options.connections[conn];
+    const connConfig = options.connections[conn];
 
     const [batch, migrations]: [number, string[]] = await knex.migrate.rollback(
       connConfig.migrations,
@@ -85,9 +85,10 @@ export class DbOperationsCommand {
     desc: 'Command to reset the migration',
   })
   async migrateReset(_cli: ConsoleIO) {
-    const conn = _cli.option<string>('connection') || this.options.default;
+    const options = ObjectionService.config;
+    const conn = _cli.option<string>('connection') || options.default;
     const knex = ObjectionService.connection(conn);
-    const connConfig = this.options.connections[conn];
+    const connConfig = options.connections[conn];
 
     const confirm = await _cli.confirm(
       'Are you sure you want to reset your database? This action is irreversible.',
@@ -102,15 +103,13 @@ export class DbOperationsCommand {
       'Please enter the password of the database to proceed',
     );
 
-    // if (connConfig.connection && typeof connConfig.connection != "string") {
-    //   if (
-    //     connConfig.connection?["password"] &&
-    //     password !== connConfig.connection?['password']
-    //   ) {
-    //     _cli.error(" Wrong Password. Exiting... ");
-    //     return;
-    //   }
-    // }
+    if (connConfig.connection && !isString(connConfig.connection)) {
+      const conPassword = connConfig.connection?.['password'];
+      if (conPassword && password !== conPassword) {
+        _cli.error(' Wrong Password. Exiting... ');
+        return;
+      }
+    }
 
     const [, migrations]: [number, string[]] = await knex.migrate.down(
       connConfig.migrations,
@@ -131,10 +130,11 @@ export class DbOperationsCommand {
     desc: 'Command to create a new migration',
   })
   async makeMigration(_cli: ConsoleIO) {
+    const options = ObjectionService.config;
     const name = _cli.argument<string>('name');
-    const conn = _cli.option<string>('connection') || this.options.default;
+    const conn = _cli.option<string>('connection') || options.default;
     const knex = ObjectionService.connection(conn);
-    const connConfig = this.options.connections[conn];
+    const connConfig = options.connections[conn];
 
     const res = await knex.migrate.make(name, {
       directory: connConfig?.migrations?.directory,

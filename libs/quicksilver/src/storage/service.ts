@@ -1,8 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { StorageOptions } from './interfaces';
 import { StorageDriver } from './interfaces';
 import { DriverManager } from './driverManager';
-import { STORAGE_OPTIONS } from './constants';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StorageService {
@@ -10,8 +10,8 @@ export class StorageService {
   private static options: StorageOptions;
   private static driverManager: DriverManager;
 
-  constructor(@Inject(STORAGE_OPTIONS) options: StorageOptions) {
-    StorageService.options = options;
+  constructor(private config: ConfigService) {
+    StorageService.options = this.config.get('filesystem');
     StorageService.diskDrivers = {};
     StorageService.driverManager = new DriverManager();
   }

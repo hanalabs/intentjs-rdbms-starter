@@ -1,4 +1,4 @@
-import { ArgumentOptionObject, ArgumentParserOutput } from "./interfaces";
+import { ArgumentOptionObject, ArgumentParserOutput } from './interfaces';
 
 export class ArgumentParser {
   constructor(private exp: string) {}
@@ -9,12 +9,12 @@ export class ArgumentParser {
   }
 
   private handle(): ArgumentParserOutput {
-    const words = this.exp.split(" ");
+    const words = this.exp.split(' ');
     const obj: ArgumentParserOutput = {
       name: words.splice(0, 1)[0],
       arguments: [],
       options: [],
-      meta: { desc: "" },
+      meta: { desc: '' },
     };
 
     for (const word of words) {
@@ -22,7 +22,7 @@ export class ArgumentParser {
       const input = word.substring(1, word.length - 1);
 
       // check if inputName starts with "--"
-      const startsWithDoubleHyphen = input.substring(0, 2) === "--";
+      const startsWithDoubleHyphen = input.substring(0, 2) === '--';
       startsWithDoubleHyphen
         ? obj.options.push({
             ...this.parseExpression(input.substring(2)),
@@ -35,17 +35,17 @@ export class ArgumentParser {
   }
 
   parseExpression(expression: string): ArgumentOptionObject {
-    const [arg, defaultValue = null] = expression.split("=");
+    const [arg, defaultValue = null] = expression.split('=');
 
     const specialCharMatch = arg.match(/[?\*]/i);
     return {
       name: specialCharMatch
         ? arg.substring(0, arg.indexOf(specialCharMatch[0]))
         : arg,
-      isRequired: !!!arg.includes("?"),
-      isArray: arg.includes("*"),
+      isRequired: !!!arg.includes('?'),
+      isArray: arg.includes('*'),
       defaultValue:
-        defaultValue != undefined ? defaultValue : "secret_default_value",
+        defaultValue != undefined ? defaultValue : 'secret_default_value',
       expression,
     };
   }

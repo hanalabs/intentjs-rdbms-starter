@@ -1,4 +1,4 @@
-import { DatabaseOptions } from '@libs/quicksilver';
+import { DatabaseOptions } from '@libs/quicksilver/database';
 import { registerAs } from '@nestjs/config';
 import { knexSnakeCaseMappers } from 'objection';
 
