@@ -2,13 +2,13 @@ import { Inject, Injectable } from '@nestjs/common';
 import * as pc from 'picocolors';
 import { Command, ConsoleIO } from '../../console';
 import { ObjectionService } from '../service';
-import { SquareboatNestObjection } from '../constants';
+import { hanalabsNestObjection } from '../constants';
 import { DatabaseOptions } from '../options';
 
 @Injectable()
 export class DbOperationsCommand {
   constructor(
-    @Inject(SquareboatNestObjection.databaseOptions)
+    @Inject(hanalabsNestObjection.databaseOptions)
     private options: DatabaseOptions,
   ) {}
 

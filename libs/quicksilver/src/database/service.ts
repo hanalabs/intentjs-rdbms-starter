@@ -33,12 +33,12 @@ export class ObjectionService implements OnModuleInit {
       try {
         await connection.raw(dbOptions.validateQuery || 'select 1+1 as result');
         console.debug(
-          `[@squareboat/nestjs-objection] '${connName}' connection validated...`,
+          `[@hanalabs/nestjs-objection] '${connName}' connection validated...`,
         );
       } catch (_e) {
         const e = _e as Error;
         console.error(
-          `[@squareboat/nestjs-objection] '${connName}' connection failed, REASON: ${e.message}`,
+          `[@hanalabs/nestjs-objection] '${connName}' connection failed, REASON: ${e.message}`,
         );
       }
     }

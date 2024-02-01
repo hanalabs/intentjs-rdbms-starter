@@ -56,6 +56,27 @@ export class ExpParser {
     return this;
   }
 
+  static buildFromObj(inputs: Record<string, any>): string {
+    for (const key in inputs) {
+      const type = typeof inputs[key];
+      if (type === 'string' || type === 'number') {
+        inputs[key] = [inputs[key]];
+      }
+    }
+
+    const keys = Object.keys(inputs).sort();
+    let str = '';
+    for (const key of keys) {
+      str += `,${key}`;
+      if (Array.isArray(inputs[key]) && inputs[key].length > 0) {
+        const values = inputs[key].sort();
+        str += `[${values.join(',')}]`;
+      }
+    }
+
+    return str.slice(1);
+  }
+
   toObj(): Record<string, any> {
     const obj = {};
     for (const o of this.parsedExp) {

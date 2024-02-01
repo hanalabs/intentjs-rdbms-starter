@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Command, ConsoleIO } from '../../console';
-import { SquareboatNestObjection } from '../constants';
+import { hanalabsNestObjection } from '../constants';
 import { DatabaseOptions } from '../options';
 import { ObjectionService } from '../service';
 
 @Injectable()
 export class DatabaseUtilitiesCommand {
   constructor(
-    @Inject(SquareboatNestObjection.databaseOptions)
+    @Inject(hanalabsNestObjection.databaseOptions)
     private options: DatabaseOptions,
   ) {}
 
