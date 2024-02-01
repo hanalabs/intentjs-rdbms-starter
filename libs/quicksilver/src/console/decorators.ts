@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { QuickSilverConsoleConstants } from './constants';
+import { ConsoleConstants } from './constants';
 import { CommandMetaOptions } from './interfaces';
 
 /**
@@ -12,13 +12,9 @@ export function Command(command: string, options?: CommandMetaOptions) {
   return function (...args: string[] | any[]) {
     switch (args.length) {
       case 1:
+        Reflect.defineMetadata(ConsoleConstants.commandName, command, args[0]);
         Reflect.defineMetadata(
-          QuickSilverConsoleConstants.commandName,
-          command,
-          args[0],
-        );
-        Reflect.defineMetadata(
-          QuickSilverConsoleConstants.commandOptions,
+          ConsoleConstants.commandOptions,
           options,
           args[0],
         );
@@ -26,13 +22,13 @@ export function Command(command: string, options?: CommandMetaOptions) {
 
       case 3:
         Reflect.defineMetadata(
-          QuickSilverConsoleConstants.commandName,
+          ConsoleConstants.commandName,
           command,
           args[0],
           args[1],
         );
         Reflect.defineMetadata(
-          QuickSilverConsoleConstants.commandOptions,
+          ConsoleConstants.commandOptions,
           options,
           args[0],
           args[1],

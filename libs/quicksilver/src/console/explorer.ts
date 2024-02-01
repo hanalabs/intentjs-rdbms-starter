@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DiscoveryService, MetadataScanner } from '@nestjs/core';
-import { QuickSilverConsoleConstants } from './constants';
+import { ConsoleConstants } from './constants';
 import { CommandMeta } from './metadata';
 import { GenericFunction } from '../interfaces';
 import { CommandMetaOptions } from './interfaces';
@@ -38,12 +38,12 @@ export class ConsoleExplorer {
   ) {
     const methodRef = instance[key];
     const hasCommandMeta = Reflect.hasMetadata(
-      QuickSilverConsoleConstants.commandName,
+      ConsoleConstants.commandName,
       instance,
       key,
     );
     const isClassConsoleCommand = Reflect.hasMetadata(
-      QuickSilverConsoleConstants.commandName,
+      ConsoleConstants.commandName,
       instance.constructor,
     );
 
@@ -52,24 +52,13 @@ export class ConsoleExplorer {
     if (isClassConsoleCommand && key != 'handle') return;
 
     const command =
-      Reflect.getMetadata(
-        QuickSilverConsoleConstants.commandName,
-        instance,
-        key,
-      ) ||
-      Reflect.getMetadata(
-        QuickSilverConsoleConstants.commandName,
-        instance.constructor,
-      );
+      Reflect.getMetadata(ConsoleConstants.commandName, instance, key) ||
+      Reflect.getMetadata(ConsoleConstants.commandName, instance.constructor);
 
     const options: CommandMetaOptions =
+      Reflect.getMetadata(ConsoleConstants.commandOptions, instance, key) ||
       Reflect.getMetadata(
-        QuickSilverConsoleConstants.commandOptions,
-        instance,
-        key,
-      ) ||
-      Reflect.getMetadata(
-        QuickSilverConsoleConstants.commandOptions,
+        ConsoleConstants.commandOptions,
         instance.constructor,
       );
 

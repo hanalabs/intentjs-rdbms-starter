@@ -1,3 +1,3 @@
 export class BoatConstants {
-  static boatjsOptions = 'boatjs/core_options';
+  static boatjsOptions = 'intent/core_options';
 }

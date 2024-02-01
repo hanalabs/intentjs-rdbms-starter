@@ -40,4 +40,4 @@ import { QueueExplorer } from './queue/explorer';
   ],
   exports: [],
 })
-export class QuickSilverModule {}
+export class IntentModule {}
