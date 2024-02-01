@@ -3,6 +3,18 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true
+  },
+  "projects": {
+    "quicksilver": {
+      "type": "library",
+      "root": "libs/quicksilver",
+      "entryFile": "index",
+      "sourceRoot": "libs/quicksilver/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/quicksilver/tsconfig.lib.json"
+      }
+    }
   }
 }
