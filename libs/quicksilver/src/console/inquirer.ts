@@ -1,4 +1,4 @@
-import inquirer from 'inquirer';
+import * as inquirer from 'inquirer';
 
 export class Inquirer {
   /**
